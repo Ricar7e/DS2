@@ -1,0 +1,1509 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Guarani 360 — Itaguá, Ubatuba</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ivory: #f4ede1;
+    --ivory-2: #ece2cf;
+    --sand:  #c9b896;
+    --sand-deep:#a8916a;
+    --ocean: #0e0e0e;
+    --ocean-2:#1a1a1a;
+    --ink:   #1c1a16;
+    --muted: #6a6357;
+    --line:  rgba(28,26,22,0.14);
+    --line-light: rgba(244,237,225,0.18);
+    --serif: "Cormorant Garamond", "Times New Roman", serif;
+    --sans:  "Plus Jakarta Sans", system-ui, sans-serif;
+  }
+  *,*::before,*::after { box-sizing: border-box; }
+  html,body { margin:0; padding:0; }
+  body {
+    background: var(--ivory);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  img { display:block; max-width:100%; }
+  a { color: inherit; text-decoration: none; }
+  h1,h2,h3,h4 { font-family: var(--serif); font-weight: 400; letter-spacing: -0.005em; margin:0; }
+  .serif-italic { font-family: var(--serif); font-style: italic; font-weight: 300; }
+
+  /* ───────── NAV — ILHA FLUTUANTE ───────── */
+  .nav {
+    position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
+    z-index: 50;
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 8px 8px 24px;
+    background: rgba(14,14,14,0.78);
+    white-space: nowrap; flex-wrap: nowrap;
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid rgba(244,237,225,0.12);
+    border-radius: 999px;
+    color: var(--ivory);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.05);
+    transition: top .3s ease, padding .3s ease, background .3s ease, transform .3s ease;
+    max-width: calc(100vw - 32px);
+  }
+  .nav.scrolled {
+    top: 16px;
+    background: rgba(14,14,14,0.92);
+  }
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 18px;
+    letter-spacing: 0.28em;
+    font-weight: 400;
+    display: flex; align-items: baseline; gap: 8px;
+    padding-right: 18px;
+    border-right: 1px solid rgba(244,237,225,0.14);
+    margin-right: 4px;
+  }
+  .nav-logo .three-sixty {
+    font-family: var(--sans);
+    font-size: 9.5px;
+    letter-spacing: 0.28em;
+    border: 1px solid currentColor;
+    padding: 3px 7px 2px;
+    border-radius: 999px;
+    transform: translateY(-2px);
+    color: var(--sand);
+    border-color: var(--sand);
+  }
+  .nav-links {
+    display: flex; gap: 2px; flex-wrap: nowrap;
+    font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase;
+    font-weight: 500;
+  }
+  .nav-links a {
+    opacity: .8;
+    padding: 10px 14px;
+    border-radius: 999px;
+    white-space: nowrap;
+    transition: opacity .2s, background .25s, color .2s;
+  }
+  .nav-links a:hover { opacity: 1; background: rgba(244,237,225,0.08); }
+  .nav-cta {
+    font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+    background: var(--sand); color: var(--ocean);
+    padding: 12px 20px; border-radius: 999px;
+    font-weight: 600;
+    margin-left: 4px;
+    white-space: nowrap;
+    transition: background .25s, color .25s, transform .25s;
+  }
+  .nav-cta:hover { background: var(--ivory); transform: translateY(-1px); }
+
+  /* ───────── HERO ───────── */
+  .hero {
+    position: relative; min-height: 100vh; color: var(--ivory);
+    overflow: hidden;
+    background: var(--ocean);
+  }
+  .hero-bg {
+    position: absolute; inset:0;
+    background-image:
+      linear-gradient(180deg, rgba(14,14,14,.20) 0%, rgba(14,14,14,.05) 35%, rgba(14,14,14,.78) 100%),
+      linear-gradient(90deg, rgba(14,14,14,.55) 0%, rgba(14,14,14,.15) 45%, rgba(14,14,14,0) 100%),
+      url("assets/hero-rooftop.jpg");
+    background-size: cover; background-position: center;
+    transform: scale(1.04);
+  }
+  .hero-grain {
+    position:absolute; inset:0; pointer-events:none; opacity:.18; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+  .hero-inner {
+    position: relative; z-index:2;
+    display: grid; grid-template-rows: 1fr auto;
+    min-height: 100vh; padding: 140px 56px 56px;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 10.5px; letter-spacing: 0.32em; text-transform: uppercase;
+    background: rgba(244,237,225,0.08); backdrop-filter: blur(8px);
+    border: 1px solid rgba(244,237,225,0.18);
+    padding: 9px 16px 8px; border-radius: 999px;
+    margin-bottom: 32px;
+    font-weight: 500;
+    white-space: nowrap;
+    width: max-content; max-width: 100%;
+  }
+  .hero-eyebrow .dot { width: 6px; height: 6px; border-radius:50%; background: var(--sand); box-shadow: 0 0 0 4px rgba(201,184,150,0.18); }
+  .hero-eyebrow .pulse { color: var(--sand); font-weight: 600; }
+  .hero h1 {
+    font-size: clamp(34px, 5vw, 68px);
+    line-height: 1.05;
+    font-weight: 300;
+    letter-spacing: -0.015em;
+    max-width: 22ch;
+  }
+  .hero h1 em { font-style: italic; color: var(--sand); font-weight: 300; }
+  .hero-sub {
+    margin-top: 32px; max-width: 46ch;
+    font-size: 17px; line-height: 1.6; opacity: .9; font-weight: 300;
+  }
+  .hero-foot {
+    display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 40px;
+    margin-top: 60px;
+  }
+  .hero-facts {
+    display: grid; grid-template-columns: repeat(4, auto); gap: 56px;
+    font-size: 12.5px; letter-spacing: 0.04em; line-height: 1.45;
+  }
+  .hero-facts .label { font-size: 10.5px; letter-spacing: 0.28em; text-transform: uppercase; opacity: .6; margin-bottom: 8px; }
+  .hero-facts .val { font-family: var(--serif); font-size: 26px; font-weight: 400; line-height: 1.1; white-space: nowrap; }
+  .hero-facts .val small { font-family: var(--sans); font-size: 11px; letter-spacing: 0.16em; opacity:.7; display:block; margin-top:4px; text-transform: uppercase; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 14px;
+    background: var(--sand); color: var(--ocean);
+    padding: 18px 28px; border-radius: 999px;
+    font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; font-weight: 600;
+    transition: background .25s, transform .25s;
+  }
+  .btn-primary:hover { background: var(--ivory); transform: translateY(-1px); }
+  .btn-primary .arrow {
+    width: 26px; height: 26px; border-radius:50%; background: var(--ocean); color: var(--sand);
+    display: grid; place-items: center; font-size: 14px; transition: transform .25s;
+  }
+  .btn-primary:hover .arrow { transform: translateX(3px); }
+
+  .scroll-cue {
+    position: absolute; left: 56px; bottom: 32px; z-index: 3;
+    font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase; opacity:.7;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .scroll-cue .line { width: 56px; height: 1px; background: currentColor; }
+
+  /* ───────── SECTIONS ───────── */
+  section { padding: 110px 56px; position: relative; }
+  .section-head {
+    display: grid; grid-template-columns: 180px 1fr; gap: 56px;
+    align-items: start; margin-bottom: 64px;
+  }
+  .section-tag {
+    font-size: 10.5px; letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--sand-deep); font-weight: 600;
+    border-top: 1px solid var(--sand-deep); padding-top: 16px;
+  }
+  .section-title {
+    font-size: clamp(34px, 4.2vw, 56px);
+    line-height: 1.06; font-weight: 300;
+    max-width: 20ch; letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  .section-title em { font-style: italic; color: var(--sand-deep); font-weight: 300; }
+
+  /* ───────── EMPREENDIMENTO (about) ───────── */
+  .about {
+    background: var(--ivory);
+  }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  }
+  .about-copy h2.section-title { font-size: clamp(32px, 3.4vw, 48px); margin-bottom: 32px; }
+  .about-copy p { font-size: 16px; line-height: 1.7; color: var(--ink); margin: 0 0 16px; max-width: 50ch; }
+  .about-copy p.lead { font-family: var(--serif); font-size: 24px; line-height: 1.35; font-weight: 400; color: var(--ocean); margin-bottom: 24px; }
+  .about-image {
+    aspect-ratio: 4/3;
+    background-image: linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(14,14,14,.22)), url("assets/about-rooftop-pool.jpg");
+    background-size: cover; background-position: center;
+    position: relative;
+  }
+  .about-image::after{
+    content:""; position:absolute; left:-24px; top:-24px; right:24px; bottom:24px;
+    border:1px solid var(--sand-deep); z-index:-1;
+  }
+  .about-image-wrap { position: relative; }
+  .about-stat {
+    position: absolute; bottom: 32px; left: 32px;
+    background: var(--ocean); color: var(--ivory);
+    padding: 20px 28px; max-width: 240px;
+  }
+  .about-stat .num { font-family: var(--serif); font-size: 44px; line-height: 1; font-weight: 300; color: var(--sand); }
+  .about-stat .label { font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase; margin-top: 8px; opacity:.85; line-height: 1.5; }
+
+  /* ───────── MARQUEE ───────── */
+  .marquee {
+    padding: 14px 0; background: var(--ocean); color: var(--ivory);
+    overflow: hidden; white-space: nowrap; border-top: 1px solid var(--line-light); border-bottom: 1px solid var(--line-light);
+  }
+  .marquee-track {
+    display: inline-block; animation: marq 38s linear infinite;
+    font-family: var(--serif); font-size: 32px; font-weight: 300; letter-spacing: -0.01em;
+  }
+  .marquee-track span { padding: 0 22px; }
+  .marquee-track .star { color: var(--sand); font-style: italic; }
+  @keyframes marq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  /* ───────── PRODUCT (full-bleed) ───────── */
+  .product {
+    position: relative; padding: 0; height: 100vh; min-height: 720px; max-height: 1080px;
+    color: var(--ivory); overflow: hidden;
+    background: #0a1a22;
+  }
+  .product-bg {
+    position: absolute; inset: 0;
+    background-image: url("assets/product-bg-noite.jpg");
+    background-size: cover; background-position: center;
+    transform: scale(1.02);
+  }
+  .product-veil {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(14,14,14,0.55) 0%, rgba(14,14,14,0.25) 30%, rgba(14,14,14,0.45) 70%, rgba(14,14,14,0.8) 100%),
+      linear-gradient(90deg, rgba(14,14,14,0.25) 0%, rgba(14,14,14,0) 50%);
+  }
+  .product-grain {
+    position: absolute; inset: 0; pointer-events: none; opacity: .14; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+  .product-inner { position: relative; z-index: 2; padding: 72px 56px 48px; height: 100%; display: flex; flex-direction: column; }
+  .product-head { max-width: 1180px; margin: 0 auto 32px; text-align: left; width: 100%; }
+  .product-eyebrow {
+    font-size: 10.5px; letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--sand); font-weight: 600; margin-bottom: 20px;
+    border-top: 1px solid var(--sand); padding-top: 12px; display: inline-block;
+  }
+  .product-title {
+    font-family: var(--serif); font-weight: 300;
+    font-size: clamp(32px, 4vw, 60px); line-height: 1.05;
+    letter-spacing: -0.015em; margin: 0 0 20px;
+    color: var(--ivory);
+  }
+  .product-title em { font-style: italic; color: var(--sand); font-weight: 300; }
+  .product-title .rule {
+    display: inline-block; width: clamp(50px, 9vw, 140px); height: 1px;
+    background: rgba(244,237,225,.55); vertical-align: middle; margin: 0 6px 0 12px;
+  }
+  .product-lead {
+    font-size: 14.5px; line-height: 1.6; max-width: 60ch;
+    color: rgba(244,237,225,.85); margin: 0;
+  }
+
+  .product-cards {
+    flex: 1; position: relative; min-height: 0;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    gap: 12px;
+    max-width: 1400px; margin: 0 auto; width: 100%;
+  }
+  .pcard {
+    background: rgba(14,14,14,0.42);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid rgba(244,237,225,0.16);
+    border-radius: 14px;
+    padding: 20px 22px 22px;
+    color: var(--ivory);
+    display: flex; flex-direction: column; gap: 10px;
+    transition: transform .35s ease, background .35s ease, border-color .35s ease;
+    overflow: hidden;
+  }
+  .pcard:hover {
+    transform: translateY(-3px);
+    background: rgba(14,14,14,0.62);
+    border-color: rgba(201,184,150,0.4);
+  }
+  .pcard-ico {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: rgba(244,237,225,0.08); color: var(--sand);
+    display: grid; place-items: center;
+    margin-bottom: 4px;
+  }
+  .pcard-ico svg { width: 20px; height: 20px; }
+  .pcard-title { font-family: var(--sans); font-size: 17px; font-weight: 600; letter-spacing: 0.005em; line-height: 1.25; }
+  .pcard-desc { font-size: 13.5px; line-height: 1.55; color: rgba(244,237,225,.78); font-weight: 300; }
+
+  /* card positions — scattered editorial layout */
+  .pcard-a { grid-column: 1 / span 3; grid-row: 1 / span 2; }
+  .pcard-b { grid-column: 9 / span 3; grid-row: 2 / span 2; }
+  .pcard-c { grid-column: 5 / span 3; grid-row: 3 / span 2; }
+  .pcard-d { grid-column: 10 / span 3; grid-row: 5 / span 2; }
+  .pcard-e { grid-column: 2 / span 3; grid-row: 4 / span 2; }
+  .pcard-f { grid-column: 6 / span 3; grid-row: 5 / span 2; }
+
+  @media (max-width: 960px) {
+    .product { height: auto; min-height: 100vh; max-height: none; }
+    .product-inner { padding: 80px 24px 56px; }
+    .product-cards {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: none;
+      gap: 10px;
+    }
+    .pcard, .pcard-a, .pcard-b, .pcard-c, .pcard-d, .pcard-e, .pcard-f {
+      grid-column: auto; grid-row: auto;
+    }
+  }
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--line);
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  }
+  .stat {
+    background: var(--ivory-2);
+    padding: 40px 32px;
+    text-align: left;
+  }
+  .stat .big {
+    font-family: var(--serif); font-size: clamp(56px, 7vw, 84px); line-height: 1; font-weight: 300; color: var(--ocean);
+    display: flex; align-items: baseline; gap: 6px;
+  }
+  .stat .big .plus { color: var(--sand-deep); font-size: clamp(34px, 4vw, 48px); }
+  .stat .big .suffix { font-size: clamp(16px, 1.4vw, 20px); color: var(--ink); margin-left: 6px; opacity:.65; font-style: italic; }
+  .stat .desc { font-size: 11.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-top: 18px; max-width: 30ch; line-height: 1.65; font-weight: 500; }
+  .pull-quote {
+    font-family: var(--serif); font-style: italic; font-weight: 300;
+    font-size: clamp(28px, 3.4vw, 42px); line-height: 1.25;
+    color: var(--ocean); margin: 0; padding: 28px 0 0;
+    border-top: 1px solid var(--line); max-width: 22ch;
+    position: relative;
+  }
+  .pull-quote em { color: var(--sand-deep); font-style: italic; }
+  .pull-quote .quote-mark {
+    font-family: var(--serif); font-style: normal; font-size: 72px;
+    color: var(--sand); position: absolute; left: -16px; top: -4px;
+    line-height: 1; opacity: .85;
+  }
+  /* Product split layout */
+  .product-split {
+    display: grid; grid-template-columns: 1.1fr .9fr; gap: 80px;
+    padding: 0 56px 80px; align-items: start;
+    max-width: 1400px;
+  }
+  .product-copy {
+    font-size: 17px; line-height: 1.75; color: var(--ink);
+    margin: 0; max-width: 52ch;
+  }
+  @media (max-width: 960px) {
+    .product-split { grid-template-columns: 1fr; gap: 40px; padding: 0 24px 56px; }
+  }
+
+  /* ───────── AMENITIES ───────── */
+  .amenities { background: var(--ocean); color: var(--ivory); }
+  .amenities .section-tag { color: var(--sand); border-color: var(--sand); }
+  .amenities .section-title em { color: var(--sand); }
+  .amenities-grid {
+    display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; grid-auto-rows: 280px;
+  }
+  .am {
+    position: relative; overflow: hidden; background: var(--ocean-2);
+    border: 1px solid var(--line-light);
+    padding: 28px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    transition: transform .4s ease;
+  }
+  .am:hover { transform: translateY(-4px); }
+  .am::before {
+    content:""; position: absolute; inset:0;
+    background-size: cover; background-position: center;
+    opacity: .55; transition: opacity .4s, transform 1s;
+  }
+  .am:hover::before { opacity: .7; transform: scale(1.04); }
+  .am::after {
+    content:""; position:absolute; inset:0;
+    background: linear-gradient(180deg, rgba(14,14,14,.2) 0%, rgba(14,14,14,.85) 100%);
+  }
+  .am > * { position: relative; z-index: 2; }
+  .am .am-num { font-family: var(--serif); font-size: 14px; opacity:.6; letter-spacing: 0.18em; }
+  .am .am-title { font-family: var(--serif); font-size: 36px; line-height: 1.05; font-weight: 400; }
+  .am .am-title em { font-style: italic; color: var(--sand); }
+  .am .am-foot { display:flex; justify-content: space-between; align-items: end; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; opacity:.7; }
+  .am-rooftop { grid-column: span 7; grid-row: span 2; }
+  .am-rooftop::before { background-image: url("https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1600&q=80"); }
+  .am-rooftop .am-title { font-size: 68px; max-width: 14ch; }
+  .am-pool { grid-column: span 5; }
+  .am-pool::before { background-image: url("https://images.unsplash.com/photo-1582610116397-edb318620f90?auto=format&fit=crop&w=1200&q=80"); }
+  .am-spa { grid-column: span 5; }
+  .am-spa::before { background-image: url("https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80"); }
+  .am-gym { grid-column: span 4; }
+  .am-gym::before { background-image: url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1200&q=80"); }
+  .am-gourmet { grid-column: span 5; }
+  .am-gourmet::before { background-image: url("https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80"); }
+  .am-market { grid-column: span 3; }
+  .am-market::before { background-image: url("https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80"); }
+  .am-deck { grid-column: span 6; }
+  .am-deck::before { background-image: url("https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=1400&q=80"); }
+  .am-portaria { grid-column: span 6; }
+  .am-portaria::before { background-image: url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=80"); }
+
+  /* Infra list */
+  .infra-list {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0 80px;
+    border-top: 1px solid var(--line-light);
+  }
+  .infra-list li {
+    display: grid; grid-template-columns: 48px 1fr; gap: 20px;
+    padding: 24px 0; align-items: baseline;
+    border-bottom: 1px solid var(--line-light);
+    transition: padding-left .3s ease;
+  }
+  .infra-list li:hover { padding-left: 10px; }
+  .infra-num {
+    font-family: var(--serif); font-size: 13px; font-weight: 400;
+    color: var(--sand); letter-spacing: 0.18em; opacity: .75;
+  }
+  .infra-title {
+    font-family: var(--serif); font-size: clamp(20px, 1.8vw, 26px); line-height: 1.2;
+    font-weight: 400; color: var(--ivory);
+  }
+  .infra-title em { font-style: italic; color: var(--sand); }
+  .infra-meta {
+    font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: rgba(244,237,225,.5); margin-top: 6px; font-weight: 500;
+  }
+  @media (max-width: 960px) {
+    .infra-list { grid-template-columns: 1fr; gap: 0; }
+  }
+
+  /* ───────── LOCATION ───────── */
+  .location { background: var(--ivory); }
+  .location-head {
+    display: grid; grid-template-columns: 180px 1.1fr 1fr; gap: 56px;
+    align-items: start; margin-bottom: 72px;
+  }
+  .location-head .section-title { max-width: 14ch; }
+  .location-intro { padding-top: 8px; }
+  .location-intro p { font-size: 16px; line-height: 1.7; color: var(--ink); margin: 0 0 14px; max-width: 44ch; }
+  .location-intro p:last-child { color: var(--ocean); margin-bottom: 0; }
+  @media (max-width: 960px) {
+    .location-head { grid-template-columns: 1fr; gap: 20px; }
+    .location-head .section-title { max-width: 100%; }
+  }
+  .location-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start;
+  }
+  .map-card {
+    position: relative; background: var(--ivory-2); aspect-ratio: 1/1;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .map-card iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; filter: grayscale(0.15) contrast(0.96); }
+  .map-card svg.routes { position:absolute; inset:0; width:100%; height:100%; }
+  .map-pin {
+    position: absolute; left: 50%; top: 48%;
+    width: 22px; height: 22px; border-radius:50%;
+    background: var(--ocean); border: 3px solid var(--sand);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 8px rgba(14,14,14,.12), 0 0 0 20px rgba(14,14,14,.06);
+  }
+  .map-pin::after { content:"Guarani 360"; position:absolute; left: 28px; top: -4px; font-family: var(--serif); font-size: 18px; color: var(--ocean); white-space: nowrap; }
+  .map-overlay {
+    position: absolute; bottom: 24px; left: 24px; right: 24px;
+    background: rgba(14,14,14,.94); color: var(--ivory);
+    padding: 20px 24px; backdrop-filter: blur(8px);
+    display: flex; justify-content: space-between; align-items: center; gap: 24px;
+  }
+  .map-overlay .addr { font-family: var(--serif); font-size: 19px; line-height: 1.3; }
+  .map-overlay .dist { font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--sand); }
+
+  .nearby-list {
+    display: flex; flex-direction: column;
+  }
+  .nearby-item {
+    display: grid; grid-template-columns: 40px 1fr auto; gap: 24px;
+    padding: 22px 0; border-bottom: 1px solid var(--line); align-items: center;
+  }
+  .nearby-item:first-child { border-top: 1px solid var(--line); }
+  .nearby-item .icon { width: 36px; height: 36px; border-radius:50%; background: var(--ivory-2); display:grid; place-items:center; color: var(--ocean); }
+  .nearby-item .name { font-family: var(--serif); font-size: 20px; color: var(--ink); font-weight: 400; }
+  .nearby-item .dist { display: flex; gap: 14px; font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .nearby-item .dist b { color: var(--sand-deep); font-weight: 600; }
+
+  /* ───────── APARTMENTS ───────── */
+  .apts { background: var(--ivory-2); }
+  .apts-head {
+    display: grid; grid-template-columns: 180px 1.1fr 1fr; gap: 56px;
+    align-items: start; margin-bottom: 64px;
+  }
+  .apts-head .section-title { max-width: 14ch; }
+  .apts-intro { font-size: 16px; line-height: 1.7; color: var(--ink); margin: 0; max-width: 44ch; padding-top: 8px; }
+  @media (max-width: 960px) {
+    .apts-head { grid-template-columns: 1fr; gap: 20px; }
+    .apts-head .section-title { max-width: 100%; }
+  }
+  .apts-tabs {
+    display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 48px;
+    border-bottom: 1px solid var(--line); padding-bottom: 0;
+  }
+  .apt-tab {
+    background: none; border: 0; cursor: pointer;
+    padding: 16px 22px;
+    font-family: var(--sans); font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; font-weight: 600;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    transition: color .2s, border-color .2s;
+  }
+  .apt-tab.active { color: var(--ocean); border-color: var(--sand-deep); }
+  .apt-tab:hover:not(.active) { color: var(--ink); }
+  .apt-tab .num { font-family: var(--serif); font-size: 18px; text-transform: none; letter-spacing: 0; margin-right: 8px; font-weight: 400; }
+
+  .apt-panel { display: none; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .apt-panel.active { display: grid; }
+  .apt-plan {
+    background: #ffffff;
+    padding: 32px;
+    display: grid; place-items: center;
+    border: 1px solid var(--line);
+    min-height: 480px;
+  }
+  .apt-plan img { width: 100%; max-height: 560px; height: auto; object-fit: contain; display: block; }
+  .apt-info h3 { font-size: clamp(40px, 4.4vw, 56px); line-height: 1; margin-bottom: 16px; letter-spacing: -0.012em; }
+  .apt-info h3 em { font-style: italic; color: var(--sand-deep); }
+  .apt-pitch {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(168,145,106,0.14); color: var(--sand-deep);
+    border: 1px solid rgba(168,145,106,0.35);
+    padding: 7px 14px; border-radius: 999px;
+    font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .apt-pitch::before { content:""; width: 6px; height: 6px; border-radius:50%; background: var(--sand-deep); }
+  .apt-info .area-row { display: flex; gap: 56px; margin: 24px 0 28px; }
+  .apt-info .area-row > div .label { font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .apt-info .area-row > div .val { font-family: var(--serif); font-size: 30px; color: var(--ocean); line-height: 1; }
+  .apt-info .features { display: flex; flex-direction: column; gap: 9px; margin-bottom: 32px; }
+  .apt-info .features li { list-style: none; display: flex; gap: 14px; align-items: center; font-size: 14.5px; color: var(--ink); line-height: 1.45; }
+  .apt-info .features li::before { content:""; width: 6px; height: 6px; border-radius:50%; background: var(--sand-deep); }
+  .apt-info ul { padding: 0; margin: 0; }
+
+  /* ───────── DS2 ───────── */
+  .ds2-section { background: var(--ivory); }
+  .ds2-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start; }
+  .ds2-copy .lead { font-family: var(--serif); font-size: clamp(22px, 2.2vw, 28px); line-height: 1.3; color: var(--ocean); margin: 0 0 20px; }
+  .ds2-copy p { font-size: 16px; line-height: 1.65; color: var(--ink); max-width: 44ch; margin: 0 0 16px; }
+  .ds2-timeline { display: flex; flex-direction: column; }
+  .ds2-item {
+    display: grid; grid-template-columns: 80px 1fr auto; gap: 32px; align-items: center;
+    padding: 28px 0; border-bottom: 1px solid var(--line);
+    position: relative; transition: background .25s;
+  }
+  .ds2-item:first-child { border-top: 1px solid var(--line); }
+  .ds2-item::before {
+    content:""; position: absolute; left: 30px; top: 0; bottom: 0; width: 1px; background: var(--line);
+  }
+  .ds2-item::after {
+    content:""; position: absolute; left: 26px; top: 50%; width: 9px; height: 9px; border-radius:50%;
+    background: var(--sand-deep); transform: translateY(-50%);
+    box-shadow: 0 0 0 4px var(--ivory);
+  }
+  .ds2-item:first-child::before { top: 50%; }
+  .ds2-item:last-child::before { bottom: 50%; }
+  .ds2-item.current::after { background: var(--ocean); box-shadow: 0 0 0 4px var(--ivory), 0 0 0 8px rgba(14,14,14,0.18); transform: translateY(-50%) scale(1.3); }
+  .ds2-year { font-family: var(--serif); font-size: 20px; font-weight: 500; color: var(--ocean); padding-left: 56px; }
+  .ds2-name { font-family: var(--serif); font-size: 22px; color: var(--ink); display: flex; align-items: center; gap: 12px; line-height: 1.2; }
+  .ds2-name .now { font-family: var(--sans); font-size: 9.5px; letter-spacing: 0.24em; text-transform: uppercase; background: var(--ocean); color: var(--sand); padding: 4px 10px; border-radius: 999px; font-weight: 600; }
+  .ds2-desc { font-size: 13px; color: var(--muted); margin-top: 6px; max-width: 52ch; line-height: 1.6; }
+  .ds2-status { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600; padding: 7px 13px; border-radius: 999px; white-space: nowrap; }
+  .ds2-status.delivered { background: rgba(168,145,106,0.16); color: var(--sand-deep); }
+  .ds2-status.current-tag { background: var(--ocean); color: var(--sand); }
+  .ds2-status.upcoming-tag { background: transparent; color: var(--muted); border: 1px solid var(--line); }
+  .ds2-item.upcoming { opacity: .72; }
+  .ds2-item.upcoming::after { background: var(--ivory); border: 1.5px solid var(--sand-deep); }
+
+  /* ───────── GALLERY ───────── */
+  .gallery { background: var(--ivory); padding-bottom: 80px; overflow: hidden; }
+  .gallery .section-head { padding-right: 56px; }
+  .gallery-wrap {
+    position: relative;
+    margin: 0 -56px;
+  }
+  .gallery-track {
+    display: flex; gap: 24px;
+    padding: 0 56px 24px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .gallery-track::-webkit-scrollbar { display: none; }
+  .gal {
+    position: relative; overflow: hidden; background: var(--ivory-2);
+    flex: 0 0 auto;
+    width: clamp(320px, 48vw, 720px);
+    aspect-ratio: 4/3;
+    scroll-snap-align: start;
+  }
+  .gal.gal-wide {
+    width: clamp(420px, 64vw, 960px);
+    aspect-ratio: 16/9;
+  }
+  .gal img { width:100%; height:100%; object-fit: cover; transition: transform 1.2s ease; }
+  .gal:hover img { transform: scale(1.04); }
+  .gal .cap {
+    position: absolute; left: 22px; bottom: 20px; right: 22px;
+    color: var(--ivory); font-family: var(--serif); font-size: 16px; font-style: italic;
+    text-shadow: 0 2px 14px rgba(0,0,0,.6);
+  }
+  .gal .cap::before {
+    content:""; position: absolute; inset: -20px -22px -22px -22px;
+    background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,.55) 100%);
+    z-index: -1; pointer-events: none;
+  }
+  .gallery-controls {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 24px; padding: 0 56px;
+  }
+  .gallery-progress {
+    flex: 1; height: 1px; background: var(--line); margin-right: 32px; position: relative; overflow: hidden;
+  }
+  .gallery-progress .bar {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    background: var(--ocean); width: 20%;
+    transition: width .35s ease, left .35s ease;
+  }
+  .gallery-nav { display: flex; gap: 12px; }
+  .gal-btn {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: transparent; border: 1px solid var(--ocean); color: var(--ocean);
+    cursor: pointer; display: grid; place-items: center;
+    transition: background .2s, color .2s, transform .2s, opacity .2s;
+    font-size: 18px;
+  }
+  .gal-btn:hover { background: var(--ocean); color: var(--sand); }
+  .gal-btn:disabled { opacity: .25; cursor: not-allowed; }
+  .gal-btn:disabled:hover { background: transparent; color: var(--ocean); }
+  @media (max-width: 960px) {
+    .gallery-wrap { margin: 0 -24px; }
+    .gallery-track { padding: 0 24px 24px; }
+    .gallery-controls { padding: 0 24px; }
+    .gal { width: 85vw; }
+    .gal.gal-wide { width: 90vw; aspect-ratio: 4/3; }
+  }
+
+  /* ───────── CTA / FORM ───────── */
+  .cta-block { background: var(--ocean); color: var(--ivory); padding: 120px 56px; }
+  .cta-block .section-head { margin-bottom: 56px; }
+  .cta-block .section-tag { color: var(--sand); border-color: var(--sand); }
+  .cta-block .section-title em { color: var(--sand); }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .form-side p { font-size: 16px; line-height: 1.65; max-width: 44ch; opacity:.88; }
+  .form-side .perks { display: flex; flex-direction: column; gap: 14px; margin-top: 32px; }
+  .form-side .perks li { list-style:none; display:flex; gap: 14px; font-size: 13.5px; line-height: 1.5; }
+  .form-side .perks .check { width: 22px; height: 22px; border-radius:50%; background: var(--sand); color: var(--ocean); display:grid; place-items:center; flex-shrink:0; font-size: 12px; }
+  .form-side ul { padding:0; margin: 0; }
+  .form-card {
+    background: rgba(244,237,225,.04); border: 1px solid var(--line-light);
+    padding: 40px;
+  }
+  .form-card .row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 22px; }
+  .form-card label { font-size: 10.5px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--sand); font-weight: 600; }
+  .form-card input, .form-card select {
+    background: transparent; border: 0; border-bottom: 1px solid var(--line-light);
+    color: var(--ivory); padding: 12px 0; font-size: 16px; font-family: var(--sans); font-weight: 300;
+    outline: none; transition: border-color .25s;
+  }
+  .form-card input:focus, .form-card select:focus { border-color: var(--sand); }
+  .form-card input::placeholder { color: rgba(244,237,225,.4); }
+  .form-card select option { color: var(--ink); }
+  .form-card .two { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .form-card button {
+    width: 100%; margin-top: 14px;
+    background: var(--sand); color: var(--ocean); border: 0; cursor: pointer;
+    padding: 20px; font-family: var(--sans); font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase; font-weight: 700;
+    transition: background .25s;
+  }
+  .form-card button:hover { background: var(--ivory); }
+  .form-card button:disabled { opacity: .55; cursor: progress; }
+  .form-feedback { font-size: 13px; margin: 14px 0 0; line-height: 1.5; min-height: 0; }
+  .form-feedback.ok { color: var(--sand); }
+  .form-feedback.err { color: #e7a17a; }
+  .form-card .legal { font-size: 11px; opacity: .55; margin-top: 16px; line-height: 1.5; }
+
+  /* ───────── FOOTER ───────── */
+  footer { background: #070707; color: rgba(244,237,225,.7); padding: 80px 56px 40px; }
+  .foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 56px; padding-bottom: 56px; border-bottom: 1px solid var(--line-light); }
+  .foot-logo { display: block; }
+  .foot-logo img { width: 180px; max-width: 100%; height: auto; display: block; }
+  .foot h5 { font-family: var(--sans); font-size: 10.5px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--sand); margin-bottom: 18px; font-weight: 600;}
+  .foot ul { padding:0; margin:0; list-style:none; display:flex; flex-direction:column; gap: 10px; font-size: 14px; }
+  .foot ul a:hover { color: var(--ivory); }
+  .foot-bottom { padding-top: 32px; display:flex; justify-content: space-between; font-size: 11px; opacity: .55; }
+  .legal-disclaimer { font-size: 11px; opacity:.45; max-width: 90ch; margin-top: 24px; line-height: 1.7; }
+
+  /* ───────── UTILITIES ───────── */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .9s ease, transform .9s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 960px) {
+    .nav { padding: 6px 6px 6px 18px; gap: 6px; }
+    .nav-logo { font-size: 15px; padding-right: 10px; }
+    .nav-links { display: none; }
+    section, .cta-block { padding: 80px 24px; }
+    .hero-inner { padding: 110px 24px 32px; }
+    .hero-facts { grid-template-columns: repeat(2, 1fr); gap: 28px; }
+    .hero-foot { grid-template-columns: 1fr; }
+    .about-grid, .location-grid, .form-grid, .apt-panel.active { grid-template-columns: 1fr; gap: 48px; }
+    .section-head { grid-template-columns: 1fr; gap: 16px; margin-bottom: 48px; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .amenities-grid { grid-template-columns: 1fr; grid-auto-rows: 240px; }
+    .am-rooftop, .am-pool, .am-spa, .am-gym, .am-gourmet, .am-market, .am-deck, .am-portaria { grid-column: span 1; grid-row: auto; }
+    .am-rooftop .am-title { font-size: 40px; }
+    .gallery-grid > * { grid-column: span 12 !important; aspect-ratio: 4/3 !important; }
+    .gallery .section-head { padding-right: 24px; }
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+    .marquee-track { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<template id="__bundler_thumbnail">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <rect width="100" height="100" fill="#0e0e0e"/>
+    <text x="50" y="44" font-family="Georgia, serif" font-size="13" fill="#f4ede1" text-anchor="middle" letter-spacing="2">GUARANI</text>
+    <text x="50" y="62" font-family="Georgia, serif" font-size="13" font-style="italic" fill="#c9b896" text-anchor="middle" letter-spacing="3">360°</text>
+  </svg>
+</template>
+
+<!-- ───────── NAV ───────── -->
+<nav class="nav" id="nav">
+  <a href="#top" class="nav-logo">GUARANI<span class="three-sixty">360°</span></a>
+  <div class="nav-links">
+    <a href="#produto">Produto</a>
+    <a href="#localizacao">Localização</a>
+    <a href="#apartamentos">Plantas</a>
+    <a href="#lazer">Infraestrutura</a>
+    <a href="#ds2">Segurança</a>
+  </div>
+  <a href="#form" class="nav-cta">Quero saber mais</a>
+</nav>
+
+<!-- ───────── HERO ───────── -->
+<header class="hero" id="top">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-grain" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow"><span class="dot"></span><span class="pulse">Pré-lançamento</span> · Itaguá · Ubatuba · SP</div>
+      <h1>Condições de pré&#8209;lançamento<br>Só existem uma vez.<br><em>Essa é a sua.</em></h1>
+      <p class="hero-sub">Guarani 360. Studios e apartamentos de 1 a 3 suítes a 300 m da orla mais valorizada de Ubatuba. Um lugar para a sua família aproveitar e que se paga sozinho quando vocês não estão lá.</p>
+    </div>
+
+    <div class="hero-foot">
+      <div class="hero-facts">
+        <div>
+          <div class="label">Tipologia</div>
+          <div class="val">Studios<small>1, 2 e 3 suítes</small></div>
+        </div>
+        <div>
+          <div class="label">Metragem</div>
+          <div class="val">40 → 131 m²<small>Área privativa</small></div>
+        </div>
+        <div>
+          <div class="label">Distância da orla</div>
+          <div class="val">300 m<small>Itaguá · ≈ 4 min a pé</small></div>
+        </div>
+        <div>
+          <div class="label">Para você</div>
+          <div class="val">Refúgio<small>+ ativo que se paga sozinho</small></div>
+        </div>
+      </div>
+      <a href="#form" class="btn-primary">Acessar condições exclusivas de pré-lançamento <span class="arrow">→</span></a>
+    </div>
+  </div>
+  <div class="scroll-cue"><span class="line"></span> Role para descobrir</div>
+</header>
+
+<!-- ───────── MARQUEE ───────── -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Rentabilidade</span><span class="star">✦</span><span>Valorização</span><span class="star">✦</span><span>Localização Premium</span><span class="star">✦</span><span>Short Stay</span><span class="star">✦</span><span>Patrimônio</span><span class="star">✦</span>
+    <span>Rentabilidade</span><span class="star">✦</span><span>Valorização</span><span class="star">✦</span><span>Localização Premium</span><span class="star">✦</span><span>Short Stay</span><span class="star">✦</span><span>Patrimônio</span><span class="star">✦</span>
+    <span>Rentabilidade</span><span class="star">✦</span><span>Valorização</span><span class="star">✦</span><span>Localização Premium</span><span class="star">✦</span><span>Short Stay</span><span class="star">✦</span><span>Patrimônio</span><span class="star">✦</span>
+  </div>
+</div>
+
+<!-- ───────── EMPREENDIMENTO ───────── -->
+<section class="about" id="empreendimento">
+  <div class="section-head reveal" style="grid-template-columns: 180px 1fr; align-items: start;">
+    <div class="section-tag">01 · O Mercado</div>
+    <div></div>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-copy reveal">
+      <h2 class="section-title" style="margin-bottom: 36px; max-width: 14ch;">Ubatuba não é um destino. É um ativo que <em>trabalha por você</em>.</h2>
+      <p>Mais de <strong>5 milhões de visitantes por ano</strong>. <strong>102 praias catalogadas</strong>, o maior número do país. Um raio de 350 km que cobre <strong>mais de 40 milhões de pessoas</strong> entre São Paulo, Rio de Janeiro e Sul de Minas.</p>
+      <p>Enquanto você não está lá aproveitando, o seu apartamento está sendo alugado para quem quer estar.</p>
+    </div>
+
+    <div class="about-image-wrap reveal">
+      <div class="about-image"></div>
+      <div class="about-stat">
+        <div class="num">300<sup style="font-size:24px; opacity:.7;">m</sup></div>
+        <div class="label">Da orla mais valorizada de Ubatuba</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── SEÇÃO 2 — O PRODUTO ───────── -->
+<section class="product" id="produto">
+  <div class="product-bg" aria-hidden="true"></div>
+  <div class="product-veil" aria-hidden="true"></div>
+  <div class="product-grain" aria-hidden="true"></div>
+
+  <div class="product-inner">
+    <div class="product-head">
+      <div class="product-eyebrow">02 · O Produto</div>
+      <h2 class="product-title">
+        O apartamento que a família usa no feriado.<br>
+        E que <em>gera renda</em> no resto do ano.
+      </h2>
+      <p class="product-lead">
+        Studios e apartamentos de 1 a 3 suítes pensados para o melhor dos dois mundos: <strong>refúgio de alto padrão</strong> para a família e <strong>ativo que se sustenta</strong> quando vocês não estão lá.
+      </p>
+    </div>
+
+    <div class="product-cards">
+      <div class="pcard pcard-a reveal">
+        <div class="pcard-ico">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 17c2-3 4-3 6-1s4 2 6-1 4-2 8 1"/><path d="M2 21c2-3 4-3 6-1s4 2 6-1 4-2 8 1"/></svg>
+        </div>
+        <div class="pcard-title">A 300 m da orla</div>
+        <div class="pcard-desc">Vista mar e acesso direto à praia mais valorizada de Ubatuba</div>
+      </div>
+
+      <div class="pcard pcard-b reveal">
+        <div class="pcard-ico">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="6" width="18" height="14" rx="1"/><path d="M3 12h18M12 6v14"/></svg>
+        </div>
+        <div class="pcard-title">Studio a 3 suítes</div>
+        <div class="pcard-desc">Formatos certos para gerar maior retorno por m²</div>
+      </div>
+
+      <div class="pcard pcard-c reveal">
+        <div class="pcard-ico">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 010 18M3 12h18"/></svg>
+        </div>
+        <div class="pcard-title">Rooftop 360°</div>
+        <div class="pcard-desc">Piscina com sauna, gourmet e vista panorâmica</div>
+      </div>
+
+      <div class="pcard pcard-d reveal">
+        <div class="pcard-ico">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4-6.2-4.6-6.2 4.6 2.4-7.4L2 9.4h7.6z"/></svg>
+        </div>
+        <div class="pcard-title">Acabamento premium</div>
+        <div class="pcard-desc">Pedras naturais, porcelanato 90×90, esquadrias finas</div>
+      </div>
+
+      <div class="pcard pcard-e reveal">
+        <div class="pcard-ico">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg>
+        </div>
+        <div class="pcard-title">Energia solar</div>
+        <div class="pcard-desc">Condomínio com menor custo e selo de sustentabilidade</div>
+      </div>
+
+      <div class="pcard pcard-f reveal">
+        <div class="pcard-ico">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        </div>
+        <div class="pcard-title">Alta liquidez</div>
+        <div class="pcard-desc">+5 milhões de visitantes/ano em Ubatuba. Demanda o ano todo</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── SEÇÃO 3 — LOCALIZAÇÃO ───────── -->
+<section class="location" id="localizacao">
+  <div class="location-head reveal">
+    <div class="section-tag">03 · Localização</div>
+    <h2 class="section-title">Tudo que a família quer. <em>Tudo</em> que o hóspede busca.</h2>
+    <div class="location-intro">
+      <p>O Itaguá é o bairro mais movimentado de Ubatuba. Praia, gastronomia, pontos turísticos e toda comodidade a poucos passos. Para vocês, é o lugar perfeito para criar memórias. Para quem aluga, é o endereço mais procurado da cidade.</p>
+      <p><strong>Alta ocupação o ano todo. Demanda crescente e recorrente.</strong></p>
+    </div>
+  </div>
+
+  <div class="location-grid">
+    <div class="map-card reveal">
+      <iframe
+        src="https://www.google.com/maps?q=Rua+Guarani,+Itagu%C3%A1,+Ubatuba+-+SP&hl=pt-BR&z=15&output=embed"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="Localização do Guarani 360 em Itaguá, Ubatuba"></iframe>
+      <div class="map-overlay">
+        <div>
+          <div class="dist">Endereço</div>
+          <div class="addr">Rua Guarani, Itaguá<br>Ubatuba, SP</div>
+        </div>
+        <a href="https://maps.app.goo.gl/D9zEJJjEkK1fbtYf7" target="_blank" rel="noopener" class="dist" style="color:var(--sand); border-bottom:1px solid var(--sand); padding-bottom:4px;">Abrir no Google Maps →</a>
+      </div>
+    </div>
+
+    <div class="nearby-list reveal">
+      <div class="nearby-item">
+        <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 18c2-4 4-4 6-2s4 2 6-1 4-3 8 1"/><path d="M2 22c2-4 4-4 6-2s4 2 6-1 4-3 8 1"/></svg></div>
+        <div class="name">Praia do Itaguá</div>
+        <div class="dist"><b>300 m</b> · 4 min</div>
+      </div>
+      <div class="nearby-item">
+        <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10"/></svg></div>
+        <div class="name">Aquário de Ubatuba</div>
+        <div class="dist"><b>400 m</b> · 5 min</div>
+      </div>
+      <div class="nearby-item">
+        <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M8 10h8M8 14h5"/></svg></div>
+        <div class="name">Ubatuba Mall</div>
+        <div class="dist"><b>500 m</b> · 6 min</div>
+      </div>
+      <div class="nearby-item">
+        <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-7h6v7"/></svg></div>
+        <div class="name">Centro Histórico</div>
+        <div class="dist"><b>1,5 km</b> · 5 min</div>
+      </div>
+      <div class="nearby-item">
+        <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 11l9-7 9 7v9a2 2 0 01-2 2h-3v-7H10v7H5a2 2 0 01-2-2v-9z"/></svg></div>
+        <div class="name">Restaurantes, bares e conveniência</div>
+        <div class="dist"><b>150 m</b> · 3 min</div>
+      </div>
+      <div class="nearby-item">
+        <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4-6.2-4.6-6.2 4.6 2.4-7.4L2 9.4h7.6z"/></svg></div>
+        <div class="name">Hospital Santa Casa</div>
+        <div class="dist"><b>1,5 km</b> · 5 min</div>
+      </div>
+      <div class="nearby-item">
+        <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg></div>
+        <div class="name">Rodovia BR-101 (Rio–Santos)</div>
+        <div class="dist"><b>1,8 km</b> · 5 min</div>
+      </div>
+      <div class="nearby-item">
+        <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 17l4-4 4 4 6-7"/></svg></div>
+        <div class="name">Aeroporto / heliponto</div>
+        <div class="dist"><b>2,4 km</b> · 8 min</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── APARTMENTS ───────── -->
+<section class="apts" id="apartamentos">
+  <div class="apts-head reveal">
+    <div class="section-tag">04 · Ficha Técnica</div>
+    <h2 class="section-title">Formatos pensados para <em>uso</em> e <em>rentabilidade</em>.</h2>
+    <p class="apts-intro">Studios e apartamentos de 1 a 3 suítes. Cada planta pensada para maximizar a experiência da família e o retorno do investimento.</p>
+  </div>
+
+  <div class="apts-tabs" role="tablist">
+    <button class="apt-tab active" data-tab="studio"><span class="num">01</span>Studio</button>
+    <button class="apt-tab" data-tab="s1"><span class="num">02</span>1 Suíte + Banheiro</button>
+    <button class="apt-tab" data-tab="s2"><span class="num">03</span>2 Suítes + Lavabo</button>
+    <button class="apt-tab" data-tab="s3"><span class="num">04</span>3 Suítes / Cobertura</button>
+  </div>
+
+  <!-- Studio -->
+  <div class="apt-panel active" data-panel="studio">
+    <div class="apt-plan reveal">
+      <img src="assets/planta-studio.jpg" alt="Planta Studio">
+    </div>
+    <div class="apt-info reveal">
+      <div class="apt-pitch">Maior giro · ocupação mais alta</div>
+      <h3><em>Studio</em><br>integrado</h3>
+      <div class="area-row">
+        <div><div class="label">Área privativa</div><div class="val">40,40 m²</div></div>
+        <div><div class="label">Vagas</div><div class="val">1</div></div>
+      </div>
+      <ul class="features">
+        <li>Layout inteligente e integrado</li>
+        <li>Ampla entrada de luz e ventilação natural</li>
+        <li>Varandas privativas</li>
+        <li>Funcionalidade e conforto em cada m²</li>
+      </ul>
+      <a href="#form" class="btn-primary" style="background:var(--ocean); color:var(--ivory);">Receber valores <span class="arrow" style="background:var(--sand); color:var(--ocean);">→</span></a>
+    </div>
+  </div>
+
+  <!-- 1 Suite -->
+  <div class="apt-panel" data-panel="s1">
+    <div class="apt-plan reveal">
+      <img src="assets/planta-1quarto.jpg" alt="Planta 1 Quarto">
+    </div>
+    <div class="apt-info reveal">
+      <div class="apt-pitch">Ideal para casal · máxima taxa de ocupação</div>
+      <h3>1 Suíte<br><em>+ banheiro</em></h3>
+      <div class="area-row">
+        <div><div class="label">Área privativa</div><div class="val">47,00 m²</div></div>
+        <div><div class="label">Vagas</div><div class="val">1</div></div>
+      </div>
+      <ul class="features">
+        <li>Suíte privativa para mais conforto</li>
+        <li>Ampla entrada de luz e ventilação natural</li>
+        <li>2 banheiros para mais praticidade</li>
+        <li>Vistas privilegiadas para o mar ou a serra*</li>
+      </ul>
+      <a href="#form" class="btn-primary" style="background:var(--ocean); color:var(--ivory);">Receber valores <span class="arrow" style="background:var(--sand); color:var(--ocean);">→</span></a>
+      <p style="font-size:12px; color:var(--muted); margin-top:16px;">* Consulte disponibilidade conforme a posição da unidade.</p>
+    </div>
+  </div>
+
+  <!-- 2 Suites -->
+  <div class="apt-panel" data-panel="s2">
+    <div class="apt-plan reveal">
+      <img src="assets/planta-2quartos.jpg" alt="Planta 2 Quartos">
+    </div>
+    <div class="apt-info reveal">
+      <div class="apt-pitch">Perfeito para a família · ticket médio superior</div>
+      <h3>2 Suítes<br><em>+ lavabo</em></h3>
+      <div class="area-row">
+        <div><div class="label">Área privativa</div><div class="val">94,80 m²</div></div>
+        <div><div class="label">Vagas</div><div class="val">2</div></div>
+      </div>
+      <ul class="features">
+        <li>2 suítes para mais conforto e privacidade</li>
+        <li>Ampla entrada de luz e ventilação natural</li>
+        <li>Lavabo social para receber com elegância</li>
+        <li>Vistas privilegiadas para o mar ou a serra*</li>
+      </ul>
+      <a href="#form" class="btn-primary" style="background:var(--ocean); color:var(--ivory);">Receber valores <span class="arrow" style="background:var(--sand); color:var(--ocean);">→</span></a>
+      <p style="font-size:12px; color:var(--muted); margin-top:16px;">* Consulte disponibilidade conforme a posição da unidade.</p>
+    </div>
+  </div>
+
+  <!-- 3 Suites Cobertura -->
+  <div class="apt-panel" data-panel="s3">
+    <div class="apt-plan reveal">
+      <img src="assets/planta-cobertura.jpg" alt="Planta Cobertura 3 Suítes">
+    </div>
+    <div class="apt-info reveal">
+      <div class="apt-pitch">Diária elevada · público de alto padrão</div>
+      <h3>Cobertura<br><em>3 suítes</em></h3>
+      <div class="area-row">
+        <div><div class="label">Área privativa</div><div class="val">131,40 m²</div></div>
+        <div><div class="label">Vagas</div><div class="val">2 + depósito</div></div>
+      </div>
+      <ul class="features">
+        <li>3 suítes para mais conforto e privacidade</li>
+        <li>Ampla entrada de luz e ventilação natural</li>
+        <li>Lavabo social para receber com elegância</li>
+        <li>Vista panorâmica para o mar ou a serra*</li>
+        <li>Área de serviço independente</li>
+      </ul>
+      <a href="#form" class="btn-primary" style="background:var(--ocean); color:var(--ivory);">Receber valores <span class="arrow" style="background:var(--sand); color:var(--ocean);">→</span></a>
+      <p style="font-size:12px; color:var(--muted); margin-top:16px;">* Consulte disponibilidade conforme a posição da unidade.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── SEÇÃO 5 — INFRAESTRUTURA ───────── -->
+<section class="amenities" id="lazer">
+  <div class="section-head reveal">
+    <div class="section-tag">05 · Infraestrutura</div>
+    <h2 class="section-title">A infraestrutura que <em>eleva</em> a experiência.<br>E sustenta diárias <em>premium</em>.</h2>
+  </div>
+
+  <div style="max-width: 880px; margin: -32px 0 60px; font-size: 17px; line-height: 1.7; color: rgba(244,237,225,.88);" class="reveal">
+    <p>Cada detalhe pensado para elevar a experiência de quem mora, de quem hospeda e de quem visita.</p>
+  </div>
+
+  <ul class="infra-list">
+    <li class="reveal">
+      <span class="infra-num">01</span>
+      <div class="infra-body">
+        <div class="infra-title">Rooftop com <em>piscina aquecida, sauna &amp; spa</em> integrados</div>
+        <div class="infra-meta">Vista panorâmica do mar e da serra</div>
+      </div>
+    </li>
+    <li class="reveal">
+      <span class="infra-num">02</span>
+      <div class="infra-body">
+        <div class="infra-title">Solarium &amp; <em>deck</em></div>
+        <div class="infra-meta">Para desacelerar ao sol ou sob as estrelas</div>
+      </div>
+    </li>
+    <li class="reveal">
+      <span class="infra-num">03</span>
+      <div class="infra-body">
+        <div class="infra-title">Espaço <em>gourmet</em></div>
+        <div class="infra-meta">Para receber, celebrar e permanecer</div>
+      </div>
+    </li>
+    <li class="reveal">
+      <span class="infra-num">04</span>
+      <div class="infra-body">
+        <div class="infra-title">Academia equipada</div>
+        <div class="infra-meta">Treino real, bem-estar e praticidade diária</div>
+      </div>
+    </li>
+    <li class="reveal">
+      <span class="infra-num">05</span>
+      <div class="infra-body">
+        <div class="infra-title">Mini <em>market</em> 24h</div>
+        <div class="infra-meta">Conveniência sem sair de casa</div>
+      </div>
+    </li>
+    <li class="reveal">
+      <span class="infra-num">06</span>
+      <div class="infra-body">
+        <div class="infra-title">Bicicletário</div>
+        <div class="infra-meta">Para explorar Ubatuba de um jeito novo</div>
+      </div>
+    </li>
+    <li class="reveal">
+      <span class="infra-num">07</span>
+      <div class="infra-body">
+        <div class="infra-title">Vagas amplas e infraestrutura para <em>recarga elétrica</em></div>
+        <div class="infra-meta">Preparado para a nova mobilidade</div>
+      </div>
+    </li>
+    <li class="reveal">
+      <span class="infra-num">08</span>
+      <div class="infra-body">
+        <div class="infra-title">Portaria <em>24h</em> &amp; energia solar</div>
+        <div class="infra-meta">Pensado para o presente. Preparado para o futuro.</div>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- ───────── GALLERY ───────── -->
+<section class="gallery" id="galeria">
+  <div class="section-head reveal">
+    <div class="section-tag">· Galeria</div>
+    <h2 class="section-title">A cada hora do dia, <em>um novo</em> cenário.</h2>
+  </div>
+
+  <div class="gallery-wrap">
+    <div class="gallery-track" id="galleryTrack">
+      <div class="gal gal-wide"><img src="assets/gallery-rooftop.jpg" alt="Rooftop pôr do sol"><div class="cap">Rooftop · pôr do sol em Itaguá</div></div>
+      <div class="gal"><img src="assets/gallery-piscina.jpg" alt="Piscina rooftop"><div class="cap">Piscina rooftop · vista mar &amp; montanha</div></div>
+      <div class="gal"><img src="assets/gallery-living.jpg" alt="Living tipo"><div class="cap">Living tipo · vista para Ubatuba</div></div>
+      <div class="gal"><img src="assets/gallery-lobby.jpg" alt="Lobby"><div class="cap">Lobby de entrada</div></div>
+      <div class="gal"><img src="assets/gallery-studio.jpg" alt="Studio"><div class="cap">Studio · planta integrada</div></div>
+      <div class="gal"><img src="assets/gallery-gourmet.jpg" alt="Espaço gourmet"><div class="cap">Espaço gourmet</div></div>
+      <div class="gal"><img src="assets/gallery-academia.jpg" alt="Academia"><div class="cap">Academia equipada</div></div>
+      <div class="gal"><img src="assets/gallery-fachada.jpg" alt="Fachada"><div class="cap">Fachada · Rua Guarani</div></div>
+    </div>
+  </div>
+
+  <div class="gallery-controls">
+    <div class="gallery-progress"><div class="bar" id="galleryBar"></div></div>
+    <div class="gallery-nav">
+      <button class="gal-btn" id="galPrev" aria-label="Anterior">←</button>
+      <button class="gal-btn" id="galNext" aria-label="Próximo">→</button>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── SEÇÃO 6 — DS2 (Prova social) ───────── -->
+<section class="ds2-section" id="ds2">
+  <div class="section-head reveal">
+    <div class="section-tag">06 · Segurança</div>
+    <h2 class="section-title">Você não está apostando. Está comprando com quem <em>já entregou</em>.</h2>
+  </div>
+
+  <div class="ds2-grid">
+    <div class="ds2-copy reveal">
+      <p class="lead">A DS2 tem reputação e histórico de entregas acima da expectativa.</p>
+      <p>Com valorização e rentabilidade acima da média local e regional, cada empreendimento reforça uma visão clara: desenvolver ativos que façam sentido para quem vive e para quem investe.</p>
+      <p>O Guarani 360 é a evolução dessa trajetória. E você pode participar desde o início, nas condições de pré-lançamento.</p>
+      <a href="#form" class="btn-primary" style="margin-top: 32px;">Entrar no pré-lançamento <span class="arrow">→</span></a>
+    </div>
+
+    <div class="ds2-timeline reveal">
+      <div class="ds2-item">
+        <div class="ds2-year">2019</div>
+        <div class="ds2-meta">
+          <div class="ds2-name">Haleiwa Residence</div>
+          <div class="ds2-desc">O projeto que marcou o início da trajetória da DS2. Capricho em cada detalhe, com valorização e rentabilidade acima da média comprovadas.</div>
+        </div>
+        <div class="ds2-status delivered">Entregue</div>
+      </div>
+      <div class="ds2-item">
+        <div class="ds2-year">2023</div>
+        <div class="ds2-meta">
+          <div class="ds2-name">Tenório 260</div>
+          <div class="ds2-desc">Elegância e exclusividade em uma das regiões mais valorizadas de Ubatuba. Um projeto que une requinte, localização e potencial de valorização.</div>
+        </div>
+        <div class="ds2-status current-tag">Em obras</div>
+      </div>
+      <div class="ds2-item">
+        <div class="ds2-year">2024</div>
+        <div class="ds2-meta">
+          <div class="ds2-name">Waimea 250</div>
+          <div class="ds2-desc">Entre a serra e o mar, um novo padrão para a Praia das Toninhas. Arquitetura contemporânea, diferenciação e valorização em uma das regiões que mais crescem em Ubatuba.</div>
+        </div>
+        <div class="ds2-status current-tag">Em obras</div>
+      </div>
+      <div class="ds2-item current">
+        <div class="ds2-year">2026</div>
+        <div class="ds2-meta">
+          <div class="ds2-name">Guarani 360 <span class="now">você está aqui</span></div>
+          <div class="ds2-desc">Qualidade de vida, experiência, valorização e renda passiva no endereço mais desejado do Itaguá. Para quem entende o valor de chegar antes em um dos lançamentos mais aguardados de Ubatuba.</div>
+        </div>
+        <div class="ds2-status current-tag">Pré-lançamento</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── CTA / FORM ───────── -->
+<section class="cta-block" id="form">
+  <div class="section-head reveal">
+    <div class="section-tag">07 · Pré-lançamento</div>
+    <h2 class="section-title">O refúgio da família: o investimento que <em>trabalha por você</em>.</h2>
+  </div>
+
+  <div class="form-grid">
+    <div class="form-side reveal">
+      <p>Cadastre-se para receber informações exclusivas do pré-lançamento.</p>
+      <ul class="perks">
+        <li><span class="check">✓</span><span>Acesso antecipado à tabela de vendas antes da abertura ao público</span></li>
+        <li><span class="check">✓</span><span>Prioridade na escolha das unidades</span></li>
+        <li><span class="check">✓</span><span>Condições reservadas de entrada</span></li>
+        <li><span class="check">✓</span><span>Relacionamento direto com a DS2</span></li>
+      </ul>
+    </div>
+
+    <form class="form-card reveal" id="leadForm" novalidate>
+      <div class="row">
+        <label for="lf-nome">Nome completo</label>
+        <input type="text" id="lf-nome" name="nome" placeholder="Como devemos te chamar" required>
+      </div>
+      <div class="two">
+        <div class="row">
+          <label for="lf-email">E-mail</label>
+          <input type="email" id="lf-email" name="email" placeholder="voce@email.com" required>
+        </div>
+        <div class="row">
+          <label for="lf-tel">WhatsApp</label>
+          <input type="tel" id="lf-tel" name="telefone" placeholder="(11) 9 0000-0000" required>
+        </div>
+      </div>
+      <div class="row">
+        <label for="lf-interesse">Interesse</label>
+        <select id="lf-interesse" name="interesse" required>
+          <option value="">Selecione uma tipologia</option>
+          <option>Studio</option>
+          <option>1 Suíte + Banheiro</option>
+          <option>2 Suítes + Lavabo</option>
+          <option>Cobertura 3 Suítes</option>
+          <option>Ainda estou avaliando</option>
+        </select>
+      </div>
+      <div class="row">
+        <label for="lf-perfil">Perfil de investimento</label>
+        <select id="lf-perfil" name="perfil_investimento" required>
+          <option value="">Selecione uma opção</option>
+          <option>Possuo recursos próprios. Fluxo direto com a construtora</option>
+          <option>Dependo de financiamento bancário ou consórcio</option>
+        </select>
+      </div>
+      <button type="submit" id="lf-submit">Ver como o apartamento se paga →</button>
+      <p class="form-feedback" id="lf-feedback" role="status" aria-live="polite"></p>
+      <p class="legal">Ao enviar, você concorda em receber comunicações da DS2 Empreendimentos sobre o Guarani 360. Seus dados estão protegidos pela LGPD.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ───────── FOOTER ───────── -->
+<footer>
+  <div class="foot-grid">
+    <div class="foot">
+      <div class="foot-logo"><img src="assets/logo-ds2.png" alt="DS2 Empreendimentos" /></div>
+      <p style="margin-top:24px; font-size:14px; line-height:1.65; max-width: 38ch;">Histórico sólido de entregas pontuais e alta qualidade no litoral norte paulista. Haleiwa, Tenório 260, Waimea 250, Guarani 360 e Acaraú 370.</p>
+    </div>
+    <div class="foot">
+      <h5>Navegação</h5>
+      <ul>
+        <li><a href="#empreendimento">Empreendimento</a></li>
+        <li><a href="#lazer">Lazer</a></li>
+        <li><a href="#localizacao">Localização</a></li>
+        <li><a href="#apartamentos">Apartamentos</a></li>
+        <li><a href="#galeria">Galeria</a></li>
+      </ul>
+    </div>
+    <div class="foot">
+      <h5>Atendimento</h5>
+      <ul>
+        <li><a href="https://wa.me/5512991488743" target="_blank" rel="noopener">WhatsApp · (12) 99148-8743</a></li>
+        <li><a href="mailto:adm@ds2empreendimentos.com.br">adm@ds2empreendimentos.com.br</a></li>
+        <li>Rua Carlos Drumond de Andrade, 300</li>
+        <li>Ubatuba, SP</li>
+      </ul>
+    </div>
+    <div class="foot">
+      <h5>Social</h5>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">YouTube</a></li>
+        <li><a href="#">LinkedIn</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="foot-bottom">
+    <span>© 2026 DS2 Empreendimentos · Guarani 360</span>
+    <span>Memorial de incorporação em registro · Patrimônio de afetação</span>
+  </div>
+
+  <p class="legal-disclaimer">As imagens, perspectivas e plantas apresentadas são meramente ilustrativas, podendo sofrer alterações em função do projeto executivo. Móveis, equipamentos e acessórios decorativos não fazem parte do imóvel. As metragens, espessuras de paredes e pilares poderão sofrer alterações de até 5% conforme projeto estrutural. Materiais de acabamento e esquadrias meramente ilustrativos.</p>
+</footer>
+
+<script>
+  // sticky nav
+  const nav = document.getElementById('nav');
+  const onScroll = () => {
+    if (window.scrollY > 60) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // apartment tabs
+  const tabs = document.querySelectorAll('.apt-tab');
+  const panels = document.querySelectorAll('.apt-panel');
+  tabs.forEach(t => {
+    t.addEventListener('click', () => {
+      tabs.forEach(x => x.classList.remove('active'));
+      panels.forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      const p = document.querySelector(`.apt-panel[data-panel="${t.dataset.tab}"]`);
+      if (p) p.classList.add('active');
+    });
+  });
+
+  // gallery carousel
+  (function(){
+    const track = document.getElementById('galleryTrack');
+    const bar = document.getElementById('galleryBar');
+    const prev = document.getElementById('galPrev');
+    const next = document.getElementById('galNext');
+    if (!track) return;
+
+    function getStep(){
+      const first = track.querySelector('.gal');
+      if (!first) return track.clientWidth * 0.6;
+      const styles = getComputedStyle(track);
+      const gap = parseFloat(styles.columnGap || styles.gap || '24');
+      return first.getBoundingClientRect().width + gap;
+    }
+    function updateProgress(){
+      const max = track.scrollWidth - track.clientWidth;
+      const pct = max <= 0 ? 100 : (track.scrollLeft / max) * 100;
+      const visible = (track.clientWidth / track.scrollWidth) * 100;
+      bar.style.width = Math.max(visible, 10) + '%';
+      bar.style.left = ((100 - Math.max(visible, 10)) * (pct / 100)) + '%';
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= max - 2;
+    }
+    prev.addEventListener('click', () => track.scrollBy({ left: -getStep(), behavior: 'smooth' }));
+    next.addEventListener('click', () => track.scrollBy({ left:  getStep(), behavior: 'smooth' }));
+    track.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress);
+    updateProgress();
+  })();
+
+  // lead form → DataCrazy webhook
+  (function(){
+    const form = document.getElementById('leadForm');
+    if (!form) return;
+    const WEBHOOK = 'https://api.datacrazy.io/v1/crm/api/crm/flows/webhooks/5aa2d069-7fe3-4e25-85a2-516cdbfc9a65/164aa32f-fcc0-4099-bbd6-a385a6afec56';
+    const btn = document.getElementById('lf-submit');
+    const fb = document.getElementById('lf-feedback');
+    const btnLabel = btn.textContent;
+
+    function setFeedback(msg, kind){
+      fb.textContent = msg;
+      fb.className = 'form-feedback' + (kind ? ' ' + kind : '');
+    }
+
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+
+      const payload = {
+        nome: form.nome.value.trim(),
+        email: form.email.value.trim(),
+        telefone: form.telefone.value.trim(),
+        interesse: form.interesse.value,
+        perfil_investimento: form.perfil_investimento.value,
+        empreendimento: 'Guarani 360',
+        origem: 'Landing Page Guarani 360',
+        url: location.href,
+        enviado_em: new Date().toISOString()
+      };
+
+      btn.disabled = true;
+      btn.textContent = 'Enviando…';
+      setFeedback('', '');
+
+      try {
+        const res = await fetch(WEBHOOK, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        form.reset();
+        setFeedback('Recebemos seu cadastro. Em breve nosso time entrará em contato.', 'ok');
+        btn.textContent = 'Cadastro enviado ✓';
+        setTimeout(() => { btn.textContent = btnLabel; btn.disabled = false; }, 4000);
+      } catch (err) {
+        // Fallback: webhook may reject browser preflight (CORS). Retry opaque no-cors so the lead still lands.
+        try {
+          await fetch(WEBHOOK, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          form.reset();
+          setFeedback('Recebemos seu cadastro. Em breve nosso time entrará em contato.', 'ok');
+          btn.textContent = 'Cadastro enviado ✓';
+          setTimeout(() => { btn.textContent = btnLabel; btn.disabled = false; }, 4000);
+        } catch (err2) {
+          setFeedback('Não foi possível enviar agora. Tente novamente ou fale com a gente pelo WhatsApp.', 'err');
+          btn.textContent = btnLabel;
+          btn.disabled = false;
+        }
+      }
+    });
+  })();
+
+  // smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (ev) => {
+      const id = a.getAttribute('href');
+      if (id.length > 1) {
+        const t = document.querySelector(id);
+        if (t) {
+          ev.preventDefault();
+          const y = t.getBoundingClientRect().top + window.scrollY - 0;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      }
+    });
+  });
+</script>
+</body>
+</html>
