@@ -1440,6 +1440,55 @@ src="https://www.facebook.com/tr?id=632685842588019&ev=PageView&noscript=1"
     updateProgress();
   })();
 
+  // ───────── UTM / attribution capture (first-touch, persisted per session) ─────────
+  const Attribution = (function(){
+    const KEYS = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid','fbclid','gad_source','ttclid','msclkid'];
+    const STORE_KEY = 'ds2_attribution';
+
+    function load(){
+      try { return JSON.parse(sessionStorage.getItem(STORE_KEY)) || {}; }
+      catch(e){ return {}; }
+    }
+    function save(d){
+      try { sessionStorage.setItem(STORE_KEY, JSON.stringify(d)); } catch(e){}
+    }
+    function fromUrl(){
+      const p = new URLSearchParams(location.search);
+      const out = {};
+      KEYS.forEach(k => { const v = p.get(k); if (v) out[k] = v; });
+      return out;
+    }
+
+    // First-touch wins: keep the first UTMs seen in this session, only fill blanks.
+    const stored = load();
+    const current = fromUrl();
+    const merged = Object.assign({}, current, stored);
+    if (!stored.first_touch_at) {
+      merged.first_touch_at = new Date().toISOString();
+      merged.landing_page = location.href;
+      merged.referrer = document.referrer || '';
+    }
+    save(merged);
+
+    return {
+      get: function(){
+        const d = load();
+        return {
+          utm_source:   d.utm_source   || '',
+          utm_medium:   d.utm_medium   || '',
+          utm_campaign: d.utm_campaign || '',
+          utm_term:     d.utm_term     || '',
+          utm_content:  d.utm_content  || '',
+          gclid:  d.gclid  || '',
+          fbclid: d.fbclid || '',
+          gad_source: d.gad_source || '',
+          referrer: d.referrer || '',
+          landing_page: d.landing_page || location.href
+        };
+      }
+    };
+  })();
+
   // lead form → DataCrazy webhook
   (function(){
     const form = document.getElementById('leadForm');
@@ -1458,7 +1507,7 @@ src="https://www.facebook.com/tr?id=632685842588019&ev=PageView&noscript=1"
       ev.preventDefault();
       if (!form.checkValidity()) { form.reportValidity(); return; }
 
-      const payload = {
+      const payload = Object.assign({
         nome: form.nome.value.trim(),
         email: form.email.value.trim(),
         telefone: form.telefone.value.trim(),
@@ -1468,7 +1517,7 @@ src="https://www.facebook.com/tr?id=632685842588019&ev=PageView&noscript=1"
         origem: 'Landing Page Guarani 360',
         url: location.href,
         enviado_em: new Date().toISOString()
-      };
+      }, Attribution.get());
 
       btn.disabled = true;
       btn.textContent = 'Enviando…';
@@ -1481,6 +1530,7 @@ src="https://www.facebook.com/tr?id=632685842588019&ev=PageView&noscript=1"
           body: JSON.stringify(payload)
         });
         if (!res.ok) throw new Error('HTTP ' + res.status);
+        if (window.fbq) fbq('track', 'Lead');
         form.reset();
         setFeedback('Recebemos seu cadastro. Em breve nosso time entrará em contato.', 'ok');
         btn.textContent = 'Cadastro enviado ✓';
@@ -1494,6 +1544,7 @@ src="https://www.facebook.com/tr?id=632685842588019&ev=PageView&noscript=1"
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
           });
+          if (window.fbq) fbq('track', 'Lead');
           form.reset();
           setFeedback('Recebemos seu cadastro. Em breve nosso time entrará em contato.', 'ok');
           btn.textContent = 'Cadastro enviado ✓';
