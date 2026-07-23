@@ -1498,6 +1498,46 @@ src="https://www.facebook.com/tr?id=2095860750979165&ev=PageView&noscript=1"
     const fb = document.getElementById('lf-feedback');
     const btnLabel = btn.textContent;
 
+    // ── CRM Giga (adicional; envio em paralelo à DataCrazy) ──
+    const GIGA_URL = 'https://crm.gigainteligencia.com.br/api/w/f5c9ef5f61def625a07a5be95b307611';
+    function gigaCookie(n){ const p = ('; ' + document.cookie).split('; ' + n + '='); return p.length === 2 ? decodeURIComponent(p.pop().split(';').shift()) : ''; }
+    function gigaUUID(){ try { if (window.crypto && crypto.randomUUID) return crypto.randomUUID(); } catch(e){} return 'evt-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,12); }
+    function gigaPhone(v){ let d = (v||'').replace(/[^0-9]/g,''); if(!d) return ''; if(d.length <= 11) d = '55' + d; return '+' + d; }
+    function sendGiga(){
+      const attr = Attribution.get();
+      const qp = new URLSearchParams(location.search);
+      const pick = (k) => attr[k] || qp.get(k) || '';
+      const payload = {
+        event_id: gigaUUID(),               // único por envio; retentativas reusam o mesmo
+        name: form.nome.value.trim(),
+        email: form.email.value.trim(),
+        phone: gigaPhone(form.telefone.value),
+        form_id: 'guarani-360',
+        form_name: 'Formulario Guarani 360 - Pre-lancamento',
+        page_url: location.href,
+        page_title: document.title || '',
+        referrer: attr.referrer || document.referrer || '',
+        utm_source: attr.utm_source || '',
+        utm_medium: attr.utm_medium || '',
+        utm_campaign: attr.utm_campaign || '',
+        utm_content: attr.utm_content || '',
+        utm_term: attr.utm_term || '',
+        fbclid: pick('fbclid'),
+        fbp: gigaCookie('_fbp'),
+        fbc: gigaCookie('_fbc'),
+        gclid: pick('gclid'),
+        gbraid: qp.get('gbraid') || '',
+        wbraid: qp.get('wbraid') || '',
+        ttclid: pick('ttclid')
+      };
+      (function post(attempt){                // conclui só com HTTP 200; até 3 tentativas
+        attempt = attempt || 1;
+        return fetch(GIGA_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload), keepalive:true })
+          .then(r => { if (r.status === 200) return true; throw new Error('HTTP ' + r.status); })
+          .catch(() => { if (attempt < 3) return new Promise(res => setTimeout(res, 800 * attempt)).then(() => post(attempt + 1)); });
+      })();
+    }
+
     function setFeedback(msg, kind){
       fb.textContent = msg;
       fb.className = 'form-feedback' + (kind ? ' ' + kind : '');
@@ -1506,6 +1546,8 @@ src="https://www.facebook.com/tr?id=2095860750979165&ev=PageView&noscript=1"
     form.addEventListener('submit', async (ev) => {
       ev.preventDefault();
       if (!form.checkValidity()) { form.reportValidity(); return; }
+
+      sendGiga(); // CRM Giga em paralelo (dispara após submit válido)
 
       const payload = Object.assign({
         nome: form.nome.value.trim(),
